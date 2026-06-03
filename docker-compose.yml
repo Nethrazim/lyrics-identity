@@ -1,0 +1,10 @@
+services:
+  lyricsidentity-api:
+    container_name: lyricsidentity-api
+    build:
+      context: .
+      dockerfile: LyricsIdentity/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
