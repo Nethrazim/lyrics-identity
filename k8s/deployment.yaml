@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lyricsidentity
+  labels:
+    app: lyricsidentity
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lyricsidentity
+  template:
+    metadata:
+      labels:
+        app: lyricsidentity
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/nethrazim/lyricsidentity-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
+            - name: ASPNETCORE_URLS
+              value: http://+:8080
+          readinessProbe:
+            httpGet:
+              path: /weatherforecast
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /weatherforecast
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
